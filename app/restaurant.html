@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Normalize.css for better cross-browser consistency -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#262932">
+  <link rel="manifest" href="/manifest.json">
+
+  <title>Restaurant Info</title>
+</head>
+
+<body class="inside">
+  <!-- Beginning header -->
+  <header>
+    <!-- Beginning nav -->
+    <nav>
+      <h1><a href="/">Restaurant Reviews</a></h1>
+    </nav>
+    <!-- Beginning breadcrumb -->
+    <nav aria-label='BreadCrumb'>
+      <ol id="breadcrumb" >
+        <li><a href="/">Home</a></li>
+      </ol>
+   </nav>
+    <!-- End breadcrumb -->
+    <!-- End nav -->
+  </header>
+  <!-- End header -->
+
+  <!-- Beginning main -->
+  <main id="maincontent">
+
+    <!-- Beginning restaurant -->
+  <section id="restaurant-container">
+    <div id="rest_rev">
+      <h2 id="restaurant-name"></h2>
+      <button role="button" class="btn" id="btn-review" data-toggle="modal" data-target="#reviewModal">Add your review</button>
+    </div>
+    <div class="modal fade" id ="reviewModal" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Add your review</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form class="form">
+                <div class="form-group">
+                  <label for="reviewer-name" class="col-form-label">Name:</label>
+                  <input type="text" class="form-control" id="reviewer-name">
+                </div>
+                <div class="form-group">
+                  <label for="comments-text" class="col-form-label">Comments:</label>
+                  <textarea class="form-control" id="comments-text" rows="5"></textarea>
+                </div>
+                <div class="form-group" id="ratingdropdown">
+                  <label for="inputRating">Rating</label>
+                  <select id="rating" class="form-control">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-default btn-default pull-left" data-dismiss="modal" id= "btn_submit" onclick="addReviewByRestaurantId()">Submit</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <img id="restaurant-img">
+      <p id="restaurant-cuisine"></p>
+  </section>
+  <section id="restaurant-address-and-schedule" tabindex="1">
+      <p id="restaurant-address" aria-labelledby="restaurant-info-label"></p>
+      <label class="restaurant-info-label">address</label>
+    <div class="restaurant-schedule">
+      <table id="restaurant-hours" aria-labelledby="restaurant-info-label"></table>
+      <label class="restaurant-info-label">restaurant open hours</label>
+  </section>
+    <!-- end restaurant -->
+    <!-- Beginning reviews -->
+  <section id="reviews-container" tabindex="1">
+    <ul id="reviews-list"></ul>
+  </section>
+    <!-- End reviews -->
+
+
+
+      <!-- Beginning map -->
+    <section id="map-container" aria-labelledby="map-aria-description" role="application">
+      <div id="map"></div>
+      <label id="map-aria-description" class="map-aria-description">Google Map</label>
+    </section>
+      <!-- End map -->
+   </section>
+  </main>
+  <!-- End main -->
+
+
+  <!-- Beginning footer -->
+  <footer id="footer">
+    Copyright (c) 2017 <a href="/" tabindex="1"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
+  </footer>
+  <!-- End footer -->
+
+  <!-- Beginning scripts -->
+  <!-- Database helpers -->
+  <script src="js/dbhelper.js"></script>
+  <!-- Main javascript file -->
+  <script src="js/restaurant_info.js"></script>
+  <script src="js/register.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script>
+        $("#btn-review").click(function(){
+        $('#reviewModal').modal('show');
+    });
+
+  </script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
+  <!-- Main CSS file -->
+  <link rel="stylesheet" type="text/css" href="css/styles.css" type="text/css">
+
+
+  <!-- Google Maps -->
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5PGDK6igBMgKH4alasIeLEPmWp2eRPls&libraries=places&callback=initMap"></script>
+  <!-- End scripts -->
+
+</body>
+
+</html>
