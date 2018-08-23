@@ -161,6 +161,8 @@ const createRestaurantHTML = (restaurant) => {
 
   const favorite = document.createElement('i');
   favorite.className = 'fa fa-thumbs-up fa-3x';
+  favorite.setAttribute('aria-label','favorite');
+  favorite.tabIndex = 1;
 
   if(restaurant.is_favorite=='true'){
     favorite.style.color = 'blue';
@@ -197,6 +199,7 @@ const createRestaurantHTML = (restaurant) => {
 
   const more = document.createElement('button');
   more.innerHTML = 'View Details';
+  more.setAttribute('aria-label','view Details of' + restaurant.name);
   more.onclick = function() {
     const resturantDetailUrl = DBHelper.urlForRestaurant(restaurant);
     window.location = resturantDetailUrl;
