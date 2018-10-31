@@ -1,6 +1,8 @@
+
 /**
  * Common database helper functions.
  */
+
 class DBHelper {
 
   /**
@@ -15,23 +17,11 @@ class DBHelper {
     const port = 1337; // Change this to your server port
     return `http://localhost:${port}/reviews/`;
   }
+
   /**
    * Fetch all restaurants.
    */
   static fetchRestaurants(callback, id) {
-   /* let xhr = new XMLHttpRequest();
-    xhr.open('GET', DBHelper.DATABASE_URL);
-    xhr.onload = () => {
-      if (xhr.status === 200) { // Got a success response from server!
-        const json = JSON.parse(xhr.responseText);
-        const restaurants = json.restaurants;
-        callback(null, restaurants);
-      } else { // Oops!. Got an error from server.
-        const error = (`Request failed. Returned status of ${xhr.status}`);
-        callback(error, null);
-      }
-    };
-    xhr.send();*/
     let restaurantURL;
     if (!id) {
       restaurantURL = DBHelper.DATABASE_URL;
@@ -43,11 +33,15 @@ class DBHelper {
       .then(response => {
         response.json().then(restaurants => {
           console.log('restaurants JSON: ', restaurants);
+         if(id) {
+            addRestauranttoStore(restaurants, id);
+          }
           callback(null, restaurants);
         });
       }).catch(error =>{
         callback('Request failed: ${error}', null);
       });
+
     }
 
   /**
@@ -198,8 +192,7 @@ class DBHelper {
 
   }
 
-  static fetchReviews(callback, id){
-    const port = 1337;
+  static fetchReviews(callback, id) {
     let reviewsUrl;
     if (!id) {
       reviewsUrl = DBHelper.Reviews_URL;
@@ -211,6 +204,7 @@ class DBHelper {
       .then(response => {
         response.json().then(reviews => {
           console.log('reviews JSON: ', reviews);
+          addReviewstoStore(reviews,id);
           callback(null, reviews);
         });
       }).catch(error =>{
@@ -241,32 +235,47 @@ class DBHelper {
    */
   static updateReviewsByreviewId(reviewId, data){
     let reviewsUrl = DBHelper.Reviews_URL + reviewId;
-    fetch(reviewsUrl, {
+    const method = 'PUT';
+    addToPendingQueue(reviewsUrl,method,reviewId,data);
+    /*fetch(reviewsUrl, {
       method: 'PUT',
       body: JSON.stringify(data),
       headers:{
         'Content-Type': 'application/json'
       }
     }).then(response => response.json())
-    .catch(error => console.error('Error:', error))
-    .then(response => console.log('Success:', response));
+    .catch(error => {
+      console.error('Error:', error);
+
+    })
+    .then(response => console.log('Success:', response));*/
   }
 
 /**
  * Add review by its restaurant Id.
  */
-  static addReviewsByRestaurantId(data){
+  static addReviewsByRestaurantId(data, restaurantID){
     let reviewsUrl = DBHelper.Reviews_URL;
-    fetch(reviewsUrl, {
+    const method = 'POST';
+    addToPendingQueue(reviewsUrl,method,restaurantID,data);
+   /* fetch(reviewsUrl, {
       method: 'POST',
       body: JSON.stringify(data),
       headers:{
         'Content-Type': 'application/json'
       }
-    }).then(response => response.json())
-    .catch(error => console.error('Error:', error))
-    .then(response => console.log('Success:', response));
+    }).then(response =>  response.json())
+    .catch(error => {
+      console.error('Error:', error);
+    })
+    .then(response => console.log('Success:', response))
+    .catch(err=>{
+       console.error('Error:', error);
+
+    });*/
   }
+
+
 
   /**
    * Delete reviews by review Id

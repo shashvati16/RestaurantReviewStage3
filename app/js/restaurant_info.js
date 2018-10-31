@@ -67,7 +67,7 @@ const fetchReviewsFromURL = (callback) => {
         return;
       }
       fillReviewsHTML();
-      //callback(null, reviews);
+
     });
   }
 };
@@ -88,6 +88,7 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
   const imgparts = imageurlbase.split('.');
   const imgurl1x = imgparts[0] + '_1X.' + imgparts[1];
   const imgurl2x = imgparts[0] + '_2X.' + imgparts[1];
+
   image.src = imgurl2x;
   image.srcset = `${imgurl1x} 300w, ${imgurl2x} 600w`;
   image.alt = restaurant.name + ' restaurant promotional image';
@@ -167,9 +168,10 @@ const createReviewHTML = (review) => {
   comments.innerHTML = review.comments;
   li.appendChild(comments);
 
-  const update = document.createElement('i');
-  update.className = 'fa fa-pencil';
-  update.style = 'font-size:24px;margin-right:10px';
+  const update = document.createElement('img');
+  update.src="/img/pen.svg";
+  update.width= 24;
+  update.style = 'margin-right:10px';
   update.setAttribute('data-toggle', 'modal');
   update.setAttribute('data-target', 'reviewUpdateModal');
   li.appendChild(update);
@@ -184,9 +186,9 @@ const createReviewHTML = (review) => {
     });
   };
 
-  const deleteIcon = document.createElement('i');
-  deleteIcon.className = 'fa fa-trash';
-  deleteIcon.style = 'font-size:24px';
+  const deleteIcon = document.createElement('img');
+  deleteIcon.src = 'img/trash.svg';
+  deleteIcon.width= 24;
   deleteIcon.onclick = function(){
     DBHelper.deleteReviewsByReviewId(reviewId);
     window.location.reload();
@@ -299,6 +301,6 @@ const addReviewByRestaurantId = () => {
     "rating": reviewRating,
     "comments": comments
   };
-  DBHelper.addReviewsByRestaurantId(review);
+  DBHelper.addReviewsByRestaurantId(review, id);
   window.location.reload();
 };

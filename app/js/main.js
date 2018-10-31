@@ -1,6 +1,7 @@
 let restaurants,
   neighborhoods,
   cuisines;
+let reviews;
 let map;
 var markers = [];
 
@@ -91,7 +92,8 @@ window.initMap = () => {
 const updateRestaurants = () => {
   const cSelect = document.getElementById('cuisines-select');
   const nSelect = document.getElementById('neighborhoods-select');
-
+  cSelect.setAttribute('aria-label', 'Select by cuisines');
+  nSelect.setAttribute('aria-label', 'Select by neighborhoods');
   const cIndex = cSelect.selectedIndex;
   const nIndex = nSelect.selectedIndex;
 
@@ -106,6 +108,7 @@ const updateRestaurants = () => {
       fillRestaurantsHTML();
     }
   });
+
 };
 
 /**
@@ -130,6 +133,13 @@ const fillRestaurantsHTML = (restaurants = self.restaurants) => {
   const ul = document.getElementById('restaurants-list');
   restaurants.forEach(restaurant => {
     ul.append(createRestaurantHTML(restaurant));
+    DBHelper.fetchReviewsByRestaurantId(restaurant.id, (error, reviews) => {
+      self.reviews = reviews;
+      if (!reviews) {
+        console.error(error);
+        return;
+      }
+    });
   });
   addMarkersToMap();
 };
@@ -146,6 +156,7 @@ const createRestaurantHTML = (restaurant) => {
   const imgparts = imageurlbase.split('.');
   const imgurl1x = imgparts[0] + '_1X.' + imgparts[1];
   const imgurl2x = imgparts[0] + '_2X.' + imgparts[1];
+
   image.src = imgurl1x;
   image.srcset = `${imgurl1x} 300w, ${imgurl2x} 600w`;
   image.alt = restaurant.name + ' restaurant promotional image';
@@ -155,32 +166,32 @@ const createRestaurantHTML = (restaurant) => {
   div.className = 'restaurant-details-text';
   li.append(div);
 
-  const name = document.createElement('h1');
+  const name = document.createElement('h2');
   name.innerHTML = restaurant.name;
   div.append(name);
 
-  const favorite = document.createElement('i');
-  favorite.className = 'fa fa-thumbs-up fa-3x';
-  favorite.setAttribute('aria-label','favorite');
-  favorite.tabIndex = 1;
+  const favorite = document.createElement('img');
+  favorite.width = 32;
 
-  if(restaurant.is_favorite=='true'){
-    favorite.style.color = 'blue';
+  favorite.setAttribute('aria-label','favorite');
+  favorite.tabIndex = 0;
+
+  if(restaurant.is_favorite==true){
+    favorite.src = '../img/On.svg';
   }
-  else if (restaurant.is_favorite=='false'){
-    favorite.style.color = 'orange';
+  if (restaurant.is_favorite==false){
+    favorite.src = '../img/Off.svg';
   }
-  //favorite.className ='fa fa-thumbs-up fa-3x';
- // let is_fav  = restaurant.is_favorite;
+
 
   favorite.onclick = function() {
-    if(restaurant.is_favorite == 'false'){
-      favorite.style.color = 'blue';
+    if(restaurant.is_favorite == false){
+      favorite.src = '../img/On.svg';
       restaurant.is_favorite = true;
       DBHelper.updateRestaurantStatus(restaurant.id,restaurant.is_favorite);
     }
     else{
-      favorite.style.color = 'orange';
+      favorite.src = '../img/Off.svg';
       restaurant.is_favorite = false;
       DBHelper.updateRestaurantStatus(restaurant.id,restaurant.is_favorite);
     }
